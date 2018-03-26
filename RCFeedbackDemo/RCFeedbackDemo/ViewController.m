@@ -20,7 +20,7 @@
     [super viewDidLoad];
     
     UIButton *button1 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    button1.frame = CGRectMake(0, 70, self.view.frame.size.width, 50);
+    button1.frame = CGRectMake(0, 70, self.view.frame.size.width/2, 50);
     [button1 setTitle:@"UIImpactFeedbackGenerator -- light" forState:UIControlStateNormal];
     button1.tintColor = [UIColor whiteColor];
     button1.backgroundColor = [UIColor grayColor];
@@ -98,6 +98,14 @@
     button10.backgroundColor = [UIColor grayColor];
     [button10 addTarget:self action:@selector(button10Action) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:button10];
+    
+    UIButton *button11 = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    button11.frame = CGRectMake(self.view.frame.size.width/2 + 5, 70, self.view.frame.size.width/2 - 5, 50);
+    [button11 setTitle:@"长振" forState:UIControlStateNormal];
+    button11.tintColor = [UIColor whiteColor];
+    button11.backgroundColor = [UIColor grayColor];
+    [button11 addTarget:self action:@selector(button11Action) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:button11];
 }
 
 
@@ -107,15 +115,18 @@
 }
 
 - (void)button1Action {
-    [RCFeedbackGenerator startFeedBackwithLevel:RCFeedbackLevelLight];
+    RCFeedbackGenerator *rcFeedbackGenerator = [[RCFeedbackGenerator alloc]initWithFeedBackwithLevel:RCFeedbackLevelLight];
+    [rcFeedbackGenerator fire];
 }
 
 - (void)button2Action {
-    [RCFeedbackGenerator startFeedBackwithLevel:RCFeedbackLevelMedium];
+    RCFeedbackGenerator *rcFeedbackGenerator = [[RCFeedbackGenerator alloc]initWithFeedBackwithLevel:RCFeedbackLevelMedium];
+    [rcFeedbackGenerator fire];
 }
 
 - (void)button3Action {
-    [RCFeedbackGenerator startFeedBackwithLevel:RCFeedbackLevelHeavy];
+    RCFeedbackGenerator *rcFeedbackGenerator = [[RCFeedbackGenerator alloc]initWithFeedBackwithLevel:RCFeedbackLevelHeavy];
+    [rcFeedbackGenerator fire];
 }
 
 - (void)button4Action {
@@ -149,5 +160,10 @@
 - (void)button10Action {
     AudioServicesPlaySystemSound(1521);
 }
+
+- (void)button11Action {
+    AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);   //长震动
+}
+
 
 @end

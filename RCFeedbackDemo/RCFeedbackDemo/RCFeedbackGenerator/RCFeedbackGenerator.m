@@ -11,9 +11,22 @@
 #import <sys/utsname.h>
 #import <AudioToolbox/AudioToolbox.h>
 
+@interface RCFeedbackGenerator ()
+
+@property (nonatomic, strong, readwrite) UIImpactFeedbackGenerator *impactFeedbackGenerator;
+
+@end
+
 @implementation RCFeedbackGenerator
 
-+ (BOOL)isiOS10andUp {
+- (instancetype)initWithFeedBackwithLevel:(RCFeedbackLevelType)rcFeedbackLevelType {
+    if (self = [super init]) {
+        [self startFeedBackwithLevel:rcFeedbackLevelType];
+    }
+    return self;
+}
+
+- (BOOL)isiOS10andUp {
     if (@available(iOS 11.0,*)) {
         NSLog(@"iOS10及以上机型");
         return YES;
@@ -23,12 +36,11 @@
     }
 }
 
-+ (NSString *)judgeDeviceModel {
+- (NSString *)judgeDeviceModel {
     
     struct utsname systemInfo;
     uname(&systemInfo);
     NSString *phoneType = [NSString stringWithCString: systemInfo.machine encoding:NSASCIIStringEncoding];
-    NSLog(@"phoneType:%@",phoneType);
     
     if ([phoneType isEqualToString:@"iPhone1,1"]) {
         return @"iPhone 2G";
@@ -92,48 +104,47 @@
     }
 }
 
-+ (void)startFeedBackwithLevel:(RCFeedbackLevelType)rcFeedbackLevelType {
-    
-    NSLog(@"%@",[self judgeDeviceModel]);
+- (void)startFeedBackwithLevel:(RCFeedbackLevelType)rcFeedbackLevelType {
+
     NSString *deviceType = [self judgeDeviceModel];
-    
+
     if ([deviceType isEqualToString:@"iPhone 7"]
         || [deviceType isEqualToString:@"iPhone 7 Plus"]
         || [deviceType isEqualToString:@"iPhone 8"]
         || [deviceType isEqualToString:@"iPhone 8 Plus"]
         || [deviceType isEqualToString:@"iPhone X"]) {
-        
+    
         if (0 == rcFeedbackLevelType) {
             NSLog(@"UIImpactFeedbackStyleLight");
-            UIImpactFeedbackGenerator *impact = [[UIImpactFeedbackGenerator alloc]initWithStyle:UIImpactFeedbackStyleLight];
-            [impact impactOccurred];
+            self.impactFeedbackGenerator = [[UIImpactFeedbackGenerator alloc]initWithStyle:UIImpactFeedbackStyleLight];
+            [self.impactFeedbackGenerator prepare];
         } else if (1 == rcFeedbackLevelType) {
             NSLog(@"UIImpactFeedbackStyleMedium");
-            UIImpactFeedbackGenerator *impact = [[UIImpactFeedbackGenerator alloc]initWithStyle:UIImpactFeedbackStyleMedium];
-            [impact impactOccurred];
+            self.impactFeedbackGenerator = [[UIImpactFeedbackGenerator alloc]initWithStyle:UIImpactFeedbackStyleMedium];
+            [self.impactFeedbackGenerator prepare];
         } else if (2 == rcFeedbackLevelType) {
             NSLog(@"UIImpactFeedbackStyleHeavy");
-            UIImpactFeedbackGenerator *impact = [[UIImpactFeedbackGenerator alloc]initWithStyle:UIImpactFeedbackStyleHeavy];
-            [impact impactOccurred];
+            self.impactFeedbackGenerator = [[UIImpactFeedbackGenerator alloc]initWithStyle:UIImpactFeedbackStyleHeavy];
+            [self.impactFeedbackGenerator prepare];
         }
-    }
-    else if ([deviceType isEqualToString:@"iPhone 6s"]
-             || [deviceType isEqualToString:@"iPhone 6s Plus"]) {
-        
+    }else if ([deviceType isEqualToString:@"iPhone 6s"]
+             || [deviceType isEqualToString:@"iPhone 6s Plus"]
+             || [deviceType isEqualToString:@"iPhone SE"]) {
         if (0 == rcFeedbackLevelType) {
-            NSLog(@"AudioServicesPlaySystemSound(1519)");
             AudioServicesPlaySystemSound(1519);
         } else if (1 == rcFeedbackLevelType) {
-            NSLog(@"AudioServicesPlaySystemSound(1520)");
             AudioServicesPlaySystemSound(1520);
         } else if (2 == rcFeedbackLevelType) {
-            NSLog(@"AudioServicesPlaySystemSound(1521)");
             AudioServicesPlaySystemSound(1520);
         }
     }
     else {
         NSLog(@"系统无法为旧设备提供震动反馈");
     }
+}
+
+- (void)fire {
+    [self.impactFeedbackGenerator impactOccurred];
 }
 
 @end

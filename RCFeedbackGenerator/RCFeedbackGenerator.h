@@ -16,10 +16,12 @@ typedef NS_ENUM(NSInteger, RCFeedbackLevelType) {
 
 @interface RCFeedbackGenerator : NSObject
 
-+ (BOOL)isiOS10andUp;   //判断系统版本是否是iOS10以上
+- (instancetype)initWithFeedBackwithLevel:(RCFeedbackLevelType)rcFeedbackLevelType;
 
-+ (NSString *)judgeDeviceModel;   //判断手机设备型号
+- (BOOL)isiOS10andUp;             //判断系统版本是否是iOS10以上
 
-+ (void)startFeedBackwithLevel:(RCFeedbackLevelType)rcFeedbackLevelType;   //开启反馈
+- (NSString *)judgeDeviceModel;   //判断手机设备型号
+
+- (void)fire;                     //开启反馈
 
 @end
