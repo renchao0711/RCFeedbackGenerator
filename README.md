@@ -11,7 +11,10 @@ typedef NS_ENUM(NSInteger, RCFeedbackLevelType) {
     RCFeedbackLevelHeavy     //2，重
 };
 
-+ (void)startFeedBackwithLevel:(RCFeedbackLevelType)rcFeedbackLevelType;
+//初始化方法
+- (instancetype)initWithFeedBackwithLevel:(RCFeedbackLevelType)rcFeedbackLevelType ;
+//开启震动
+- (void)fire ;
 ```
 
 #### 测试震动反馈接口
